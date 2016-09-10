@@ -1,0 +1,14 @@
+[
+  {
+    "id": "1",
+    "label": "First list item from server"
+  },
+  {
+    "id": "2",
+    "label": "Second list item from server"
+  },
+  {
+    "id": "3",
+    "label": "Third list item from server"
+  }
+]

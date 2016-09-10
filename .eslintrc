@@ -1,0 +1,14 @@
+{
+  "extends": "airbnb",
+  "plugins": [
+    "react"
+  ],
+  "globals": {
+    "jest": true,
+    "expect": true,
+    "it": true,
+    "describe": true,
+    "fetch": true,
+    "beforeEach": true
+  }
+}
