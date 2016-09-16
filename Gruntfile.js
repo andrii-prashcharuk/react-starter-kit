@@ -20,7 +20,9 @@ module.exports = function(grunt) {
         expand: true,
         src: [
           './src/scripts/**/*.jsx',
-          './src/scripts/**/*.es6'
+          './src/scripts/**/*.es6',
+          '!./src/scripts/**/__tests__/*.jsx',
+          '!./src/scripts/**/__tests__/*.es6'
         ],
         dest: './src/__compiled__',
         ext: '.js'
@@ -74,8 +76,7 @@ module.exports = function(grunt) {
       //Watching targets of preprocessors(dest) for livereload
       targets: {
         files: [
-          'src/__compiled__/index.min.js',
-          'src/styles/normalize.min.css'
+          'src/__compiled__/index.min.js'
         ],
         options: {
           livereload: true
@@ -103,9 +104,16 @@ module.exports = function(grunt) {
       }
     },
 
-    // Cleaning build results
+    jest: {
+      options: {
+        coverage: true
+      }
+    },
+    
+    // Cleaning build results & test snapshots
     clean: {
-      build: ['./src/__compiled__/']
+      build: ['./src/__compiled__/'],
+      test: ['./src/**/__tests__/__snapshots__/']
     }
   });
 
@@ -115,12 +123,14 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-connect');
   grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.loadNpmTasks('grunt-concat-css');
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-react');
+  grunt.loadNpmTasks('grunt-jest');
 
   grunt.registerTask('default', ['serve']);
   grunt.registerTask('build-js', ['env', 'babel', 'browserify:main' ,'uglify:dist']);
-  grunt.registerTask('build', ['clean', 'build-js']);
+  grunt.registerTask('build', ['clean:build', 'build-js']);
+  grunt.registerTask('test', ['jest']);
+  grunt.registerTask('test-clean', ['clean:test', 'jest']);
   grunt.registerTask('serve', ['build', 'connect:server', 'watch']);
 };

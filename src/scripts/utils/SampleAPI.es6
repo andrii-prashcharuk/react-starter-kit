@@ -1,17 +1,18 @@
 'use strict';
 import $ from 'jquery';
-import config from '../constants/config';
+
+const URL = '/mocks/data/sample_data.json';
 
 export default {
   getAllData() {
     return $.ajax({
-      url: config.URL,
+      url: URL,
       dataType: 'json'
     });
   },
   getFilteredData(filter) {
     return $.ajax({
-      url: config.URL,
+      url: URL,
       dataType: 'json',
       data: { filter }
     });

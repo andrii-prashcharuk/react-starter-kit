@@ -1,14 +1,12 @@
-import React from 'react';
+'use strict';
+import React, { PropTypes } from 'react';
 import { Provider } from 'react-redux';
 import { Router, Route, IndexRoute, browserHistory } from 'react-router';
-import { App, HomePage, SamplePage } from './index';
+import App from './App';
+import HomePage from './HomePage';
+import SamplePage from './SamplePage';
 
-export default class Root extends React.Component {
-
-  propTypes: {
-    store: React.PropTypes.object.isRequired
-  };
-
+class Root extends React.Component {
   render () {
     return (
       <Provider store={ this.props.store }>
@@ -22,3 +20,8 @@ export default class Root extends React.Component {
     );
   }
 }
+Root.propTypes = {
+  store: React.PropTypes.object.isRequired
+};
+
+export default Root;

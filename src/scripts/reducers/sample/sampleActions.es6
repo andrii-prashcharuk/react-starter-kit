@@ -34,7 +34,7 @@ export function getAllData() {
 
     return sampleAPI.getAllData()
       .then((data) => dispatch(getDataSuccess(data)))
-      .catch((error) => dispatch(getDataFailure(error)));
+      .catch(({responseJSON}) => dispatch(getDataFailure(responseJSON)));
   };
 }
 /**
@@ -46,6 +46,6 @@ export function getFilteredData(filter) {
 
     return sampleAPI.getFilteredData(filter)
       .then((data) => dispatch(getDataSuccess(data)))
-      .catch((error) => dispatch(getDataFailure(error)));
+      .catch(({responseJSON}) => dispatch(getDataFailure(responseJSON)));
   };
 }

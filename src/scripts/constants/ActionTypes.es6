@@ -1,3 +1,4 @@
+'use strict';
 import keyMirror from 'key-mirror';
 
 export default keyMirror({

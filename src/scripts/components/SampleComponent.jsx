@@ -1,6 +1,5 @@
 'use strict';
 import React from 'react';
-import {bindAll, includes} from 'lodash';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import config from '../constants/config';
@@ -25,14 +24,6 @@ function mapDispatchToProps(dispatch) {
 }
 
 class SampleComponent extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      data: [],
-      isFetching: false,
-      error: null
-    };
-  }
   componentDidMount() {
     const { filter } = this.props;
 
@@ -42,23 +33,23 @@ class SampleComponent extends React.Component {
       this.props.actions.getAllData();
     }
   }
-  componentWillReceiveProps(props) {
-    this.setState(props.sampleData);
-  }
   render() {
-    let {data, isFetching, error} = this.state;
-    let buildItems;
+    let {data, isFetching, error} = this.props.sampleData;
+    let dataItems;
     let content;
 
-    if (!data.length) {
-      content = <div>{config.NO_DATA_MSG}</div>;
-    } else if (isFetching) {
+    if (isFetching) {
       content = <div>{config.FETCHING_DATA_MSD}</div>;
+    } else if (!data.length) {
+      content = <div>{config.NO_DATA_MSG}</div>;
     } else {
-      buildItems = data.map((dataItem) => {
-        return <li>{dataItem.label}</li>
-      });
-      content = <ul>{buildItems}</ul>;
+      dataItems = data.map(({id, label}) => <li key={id}>{label}</li>);
+      content = (
+        <div>
+          <h3>List{this.props.filter ? ' (filtered)' : ''}:</h3>
+          <ul>{dataItems}</ul>
+        </div>
+      );
     }
 
     if (error) {
