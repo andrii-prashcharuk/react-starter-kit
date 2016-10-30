@@ -1,5 +1,5 @@
 'use strict';
-import sampleReducer from '../sampleReducer';
+import sample from '../sample';
 import actionTypes from '../../../constants/actionTypes';
 
 const {
@@ -8,7 +8,7 @@ const {
   GET_DATA_FAILURE,
   } = actionTypes;
 
-describe('sampleReducer tests', () => {
+describe('sample tests', () => {
   describe('check init values', () => {
     let initialState = null;
 
@@ -16,7 +16,7 @@ describe('sampleReducer tests', () => {
       const action = {
         type: 'dummy'
       };
-      initialState = sampleReducer(undefined, action);
+      initialState = sample(undefined, action);
     });
 
     it('sets data to an empty List', () => {
@@ -37,7 +37,7 @@ describe('sampleReducer tests', () => {
       const action = {
         type: GET_DATA_REQUEST
       };
-      const next = sampleReducer(undefined, action);
+      const next = sample(undefined, action);
       
       expect(next.isFetching).toBeTruthy();
       expect(next.error).toBeNull();
@@ -55,7 +55,7 @@ describe('sampleReducer tests', () => {
         type: GET_DATA_SUCCESS,
         payload: serverData
       };
-      const next = sampleReducer(undefined, action);
+      const next = sample(undefined, action);
 
       expect(next.data.toJS()).toEqual(serverData);
       expect(next.isFetching).toBeFalsy();
@@ -72,7 +72,7 @@ describe('sampleReducer tests', () => {
         type: GET_DATA_FAILURE,
         payload: error
       };
-      const next = sampleReducer(undefined, action);
+      const next = sample(undefined, action);
 
       expect(next.isFetching).toBeFalsy();
       expect(next.error).toEqual(error);

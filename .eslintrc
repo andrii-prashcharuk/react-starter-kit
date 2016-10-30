@@ -1,14 +1,23 @@
 {
   "extends": "airbnb",
+  "parser": "babel-eslint",
   "plugins": [
     "react"
   ],
   "globals": {
+    "window": true,
+    "document": true,
     "jest": true,
     "expect": true,
     "it": true,
     "describe": true,
     "fetch": true,
-    "beforeEach": true
+    "beforeEach": true,
+    "afterEach": true
+  },
+  "rules": {
+    "indent": ["error", 4, { "SwitchCase": 1 }],
+    "react/jsx-indent": ["error", 4],
+    "react/no-unused-prop-types": ["error", { "skipShapeProps": true }]
   }
 }

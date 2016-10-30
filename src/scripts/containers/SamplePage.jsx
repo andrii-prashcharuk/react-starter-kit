@@ -1,14 +1,11 @@
-'use strict';
 import React from 'react';
-import SampleComponent from '../components/SampleComponent';
+import SampleComponent from '../components/sampleComponent';
 
-export default class BuildsPage extends React.Component {
-  render() {
+export default function SamplePage() {
     return (
-      <section>
-        <h4>On this page you can see a sample data from server</h4>
-        <SampleComponent/>
-      </section>
+        <section>
+            <h4>On this page you can see a sample data from server</h4>
+            <SampleComponent />
+        </section>
     );
-  }
 }
