@@ -3,6 +3,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import config from '../constants/config';
 import * as sampleActions from '../reducers/sample/sampleActions';
+import './SampleComponent.scss';
 
 function mapStateToProps(state) {
     const { data, isFetching, error } = state.sample.toJS();
@@ -72,7 +73,7 @@ class SampleComponent extends React.Component {
         }
 
         return (
-            <div>
+            <div className="SampleComponent">
                 {this.renderError()}
                 {content}
             </div>

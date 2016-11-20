@@ -1,5 +1,5 @@
 import { List } from 'immutable';
-import InitialState from './sampleInitialState';
+import InitialState from './SampleInitialState';
 import actionTypes from '../../constants/actionTypes';
 
 const {

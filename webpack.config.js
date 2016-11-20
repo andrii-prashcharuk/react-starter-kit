@@ -30,10 +30,14 @@ module.exports = {
                 include: APP_DIR,
                 test: /\.jsx?$/,
             },
+            {
+                test: /\.scss$/,
+                loaders: ['style', 'css', 'sass'],
+            },
         ],
     },
     resolve: {
-        extensions: ['', '.js', '.jsx', '.json'],
+        extensions: ['', '.js', '.jsx', '.json', 'scss'],
     },
     eslint: {
         configFile: '.eslintrc',

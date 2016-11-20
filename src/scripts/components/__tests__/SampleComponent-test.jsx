@@ -4,9 +4,9 @@ import { Provider } from 'react-redux';
 import { List } from 'immutable';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import SampleComponent from '../sampleComponent';
+import SampleComponent from '../SampleComponent';
 import actionTypes from '../../constants/actionTypes';
-import SampleInitialState from '../../reducers/sample/sampleInitialState';
+import SampleInitialState from '../../reducers/sample/SampleInitialState';
 
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
@@ -82,7 +82,7 @@ describe('SampleComponent tests', () => {
 
     it('should be rendered correctly with some filtered dataset from server', () => {
         const store = mockStore({ sample: new SampleInitialState(dataState) });
-        const filter = { foo: 'bar' };
+        const filter = "foo=bar";
         const tree = renderer
             .create(
                 <Provider store={store}>

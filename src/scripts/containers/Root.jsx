@@ -1,27 +1,41 @@
 import React from 'react';
-import { Provider } from 'react-redux';
-import { Router, Route, IndexRoute, browserHistory } from 'react-router';
-import configureStore from '../utils/configureStore';
-import SampleInitialState from '../reducers/sample/sampleInitialState';
-import App from './App';
-import HomePage from './HomePage';
-import SamplePage from './SamplePage';
+import { Link } from 'react-router';
 
-const getInitialState = () => {
-    const sample = new SampleInitialState();
-    return { sample };
+const styles = {
+    nav: {
+        padding: 10,
+    },
+    menu: {
+        margin: 0,
+        padding: 0,
+        display: 'flex',
+        listStyle: 'none',
+    },
+    menuItem: {
+        display: 'block',
+        padding: '5px 10px',
+    },
+    main: {
+        padding: 10,
+    },
 };
-const store = configureStore(getInitialState());
 
-export default function Root() {
+export default function Root(props) {
     return (
-        <Provider store={store}>
-            <Router history={browserHistory}>
-                <Route path="/" component={App}>
-                    <IndexRoute component={HomePage} />
-                    <Route path="sample" component={SamplePage} />
-                </Route>
-            </Router>
-        </Provider>
+        <div>
+            <nav style={styles.nav}>
+                <ul style={styles.menu}>
+                    <li><Link to="/" style={styles.menuItem}>Home</Link></li>
+                    <li><Link to="/sample" style={styles.menuItem}>Sample Page</Link></li>
+                </ul>
+            </nav>
+            <main style={styles.main}>
+                {props.children}
+            </main>
+        </div>
     );
 }
+
+Root.prototype.propTypes = {
+    children: React.PropTypes.node,
+};
