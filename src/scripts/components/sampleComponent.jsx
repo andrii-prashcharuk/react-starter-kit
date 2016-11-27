@@ -2,7 +2,7 @@ import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import config from '../constants/config';
-import * as sampleActions from '../reducers/sample/sampleActions';
+import { getFilteredData, getAllData } from '../reducers/sample/sampleActions';
 import './SampleComponent.scss';
 
 function mapStateToProps(state) {
@@ -16,11 +16,9 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-    const { getFilteredData, getAllData } = bindActionCreators(sampleActions, dispatch);
-
     return {
-        getFilteredData,
-        getAllData,
+        getFilteredData: bindActionCreators(getFilteredData, dispatch),
+        getAllData: bindActionCreators(getAllData, dispatch),
     };
 }
 

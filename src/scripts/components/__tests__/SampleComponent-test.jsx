@@ -73,7 +73,7 @@ describe('SampleComponent tests', () => {
         const tree = renderer
             .create(
                 <Provider store={store}>
-                    <SampleComponent/>
+                    <SampleComponent />
                 </Provider>
             )
             .toJSON();
@@ -82,7 +82,7 @@ describe('SampleComponent tests', () => {
 
     it('should be rendered correctly with some filtered dataset from server', () => {
         const store = mockStore({ sample: new SampleInitialState(dataState) });
-        const filter = "foo=bar";
+        const filter = 'foo=bar';
         const tree = renderer
             .create(
                 <Provider store={store}>
