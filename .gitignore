@@ -1,6 +1,4 @@
 .idea
-node_modules
-coverage
-src/__compiled__
-__snapshots__
+src/node_modules
+dst
 npm-debug.log

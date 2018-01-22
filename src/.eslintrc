@@ -1,0 +1,27 @@
+extends:
+  eslint-config-airbnb
+
+plugins:
+  - react
+
+parser:
+  babel-eslint
+
+settings:
+  ecmascript: 6
+
+env:
+  browser: true
+  mocha: true
+  node: true
+
+rules:
+  indent: ["error", 4, {
+    "SwitchCase": 1
+  }]
+  react/jsx-indent: ["error", 4]
+  react/jsx-indent-props: ["error", 4]
+  react/prefer-stateless-function: 2
+  linebreak-style: 0
+  react/jsx-filename-extension: 0
+  react/require-default-props: 0
