@@ -1,6 +1,6 @@
 import React from 'react';
 import { func, arrayOf, string, bool, shape } from 'prop-types';
-import config from '../../constants/index';
+import config from '../../constants';
 import './SampleComponent.scss';
 
 export default class SampleComponent extends React.Component {

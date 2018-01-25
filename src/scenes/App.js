@@ -9,20 +9,20 @@ import './App.scss';
 
 const store = getStore();
 
-export default function AppLayout() {
-    return (
-        <Provider store={store}>
-            <BrowserRouter>
-                <div className="AppLayout">
-                    <header>
-                        <Nav />
-                    </header>
-                    <main>
-                        <Route path="/" exact component={HomePage} />
-                        <Route path="/sample" component={SamplePage} />
-                    </main>
-                </div>
-            </BrowserRouter>
-        </Provider>
-    );
-}
+const AppLayout = () => (
+    <Provider store={store}>
+        <BrowserRouter>
+            <div className="AppLayout">
+                <header>
+                    <Nav />
+                </header>
+                <main>
+                    <Route path="/" exact component={HomePage} />
+                    <Route path="/sample" component={SamplePage} />
+                </main>
+            </div>
+        </BrowserRouter>
+    </Provider>
+);
+
+export default AppLayout;

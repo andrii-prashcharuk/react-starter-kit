@@ -1,4 +1,5 @@
 import sampleAPI from '../../utils/api';
+import { getErrorFromRequest } from '../../utils';
 import actionTypes from '../../constants/actionTypes';
 
 const {
@@ -31,7 +32,7 @@ export function getAllData() {
 
         return sampleAPI.getAllData()
             .then(request => dispatch(getDataSuccess(request.data)))
-            .catch(({ responseJSON }) => dispatch(getDataFailure(responseJSON)));
+            .catch(request => dispatch(getDataFailure(getErrorFromRequest(request))));
     };
 }
 
@@ -41,6 +42,6 @@ export function getFilteredData(filter) {
 
         return sampleAPI.getFilteredData(filter)
             .then(request => dispatch(getDataSuccess(request.data)))
-            .catch(({ responseJSON }) => dispatch(getDataFailure(responseJSON)));
+            .catch(request => dispatch(getDataFailure(getErrorFromRequest(request))));
     };
 }

@@ -1,5 +1,6 @@
-import sample from '../sampleReducer';
-import actionTypes from '../../../constants/actionTypes';
+import { expect } from 'chai';
+import sample from './sampleReducer';
+import actionTypes from '../../constants/actionTypes';
 
 const {
     GET_DATA_REQUEST,
@@ -19,15 +20,15 @@ describe('sample tests', () => {
         });
 
         it('sets data to an empty List', () => {
-            expect(initialState.data.toJS()).toEqual([]);
+            expect(initialState.data.toJS()).to.deep.equal([]);
         });
 
         it('sets isFetching to false', () => {
-            expect(initialState.isFetching).toBeFalsy();
+            expect(initialState.isFetching).to.equal(false);
         });
 
         it('sets error to null', () => {
-            expect(initialState.error).toBeNull();
+            expect(initialState.error).to.equal(null);
         });
     });
 
@@ -38,8 +39,8 @@ describe('sample tests', () => {
             };
             const next = sample(undefined, action);
 
-            expect(next.isFetching).toBeTruthy();
-            expect(next.error).toBeNull();
+            expect(next.isFetching).to.equal(true);
+            expect(next.error).to.equal(null);
         });
     });
 
@@ -56,9 +57,9 @@ describe('sample tests', () => {
             };
             const next = sample(undefined, action);
 
-            expect(next.data.toJS()).toEqual(serverData);
-            expect(next.isFetching).toBeFalsy();
-            expect(next.error).toBeNull();
+            expect(next.data.toJS()).to.deep.equal(serverData);
+            expect(next.isFetching).to.equal(false);
+            expect(next.error).to.equal(null);
         });
     });
 
@@ -73,8 +74,8 @@ describe('sample tests', () => {
             };
             const next = sample(undefined, action);
 
-            expect(next.isFetching).toBeFalsy();
-            expect(next.error).toEqual(error);
+            expect(next.isFetching).to.equal(false);
+            expect(next.error).to.deep.equal(error);
         });
     });
 });

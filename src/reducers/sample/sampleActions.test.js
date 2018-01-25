@@ -1,8 +1,9 @@
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import sinon from 'sinon';
-import * as actions from '../sampleActions';
-import actionTypes from '../../../constants/actionTypes';
+import { expect } from 'chai';
+import { fakeServer } from 'sinon';
+import * as actions from './sampleActions';
+import actionTypes from '../../constants/actionTypes';
 
 const {
     GET_DATA_REQUEST,
@@ -26,21 +27,21 @@ describe('sampleActions tests', () => {
     let server;
 
     beforeEach(() => {
-        server = sinon.fakeServer.create();
+        server = fakeServer.create();
     });
 
     afterEach(() => {
         server.restore();
     });
 
-    it('should return correct event type for getCarsRequest', () => {
-        expect(actions.getDataRequest()).toEqual({
+    it('should return correct event type for getDataRequest', () => {
+        expect(actions.getDataRequest()).to.deep.equal({
             type: GET_DATA_REQUEST,
         });
     });
 
     it('should return correct event type and data for getDataSuccess', () => {
-        expect(actions.getDataSuccess(serverData)).toEqual({
+        expect(actions.getDataSuccess(serverData)).to.deep.equal({
             type: GET_DATA_SUCCESS,
             payload: serverData,
         });
@@ -50,7 +51,7 @@ describe('sampleActions tests', () => {
         const error = {
             error: 'Some Error',
         };
-        expect(actions.getDataFailure(error)).toEqual({
+        expect(actions.getDataFailure(error)).to.deep.equal({
             type: GET_DATA_FAILURE,
             payload: error,
         });
@@ -63,12 +64,12 @@ describe('sampleActions tests', () => {
             { type: GET_DATA_SUCCESS, payload: serverData },
         ];
 
-        server.respondWith('/__mocks__/data/sample_data.json', JSON.stringify(serverData));
+        server.respondWith('/__mocks__/sample_data.json', JSON.stringify(serverData));
         setTimeout(() => server.respond(), 0);
 
         return store.dispatch(actions.getAllData())
             .then(() => {
-                expect(store.getActions()).toEqual(expectedActions);
+                expect(store.getActions()).to.deep.equal(expectedActions);
             });
     });
 
@@ -80,12 +81,12 @@ describe('sampleActions tests', () => {
             { type: GET_DATA_FAILURE, payload: error },
         ];
 
-        server.respondWith('/__mocks__/data/sample_data.json', [404, {}, JSON.stringify(error)]);
+        server.respondWith('/__mocks__/sample_data.json', [404, {}, JSON.stringify(error)]);
         setTimeout(() => server.respond(), 0);
 
         return store.dispatch(actions.getAllData())
             .then(() => {
-                expect(store.getActions()).toEqual(expectedActions);
+                expect(store.getActions()).to.deep.equal(expectedActions);
             });
     });
 
@@ -96,12 +97,12 @@ describe('sampleActions tests', () => {
             { type: GET_DATA_SUCCESS, payload: serverData },
         ];
 
-        server.respondWith('/__mocks__/data/sample_data.json', JSON.stringify(serverData));
+        server.respondWith('/__mocks__/sample_data.json', JSON.stringify(serverData));
         setTimeout(() => server.respond(), 0);
 
         return store.dispatch(actions.getFilteredData())
             .then(() => {
-                expect(store.getActions()).toEqual(expectedActions);
+                expect(store.getActions()).to.deep.equal(expectedActions);
             });
     });
 
@@ -113,12 +114,12 @@ describe('sampleActions tests', () => {
             { type: GET_DATA_FAILURE, payload: error },
         ];
 
-        server.respondWith('/__mocks__/data/sample_data.json', [404, {}, JSON.stringify(error)]);
+        server.respondWith('/__mocks__/sample_data.json', [404, {}, JSON.stringify(error)]);
         setTimeout(() => server.respond(), 0);
 
         return store.dispatch(actions.getFilteredData())
             .then(() => {
-                expect(store.getActions()).toEqual(expectedActions);
+                expect(store.getActions()).to.deep.equal(expectedActions);
             });
     });
 });

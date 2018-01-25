@@ -35,6 +35,14 @@ module.exports = {
                 include: APP_DIR,
             },
             {
+                test: /\.png/,
+                loader: 'url-loader?limit=100000&name=/images/[name].[ext]',
+            },
+            {
+                test: /\.jpg/,
+                loader: 'file-loader?&name=/images/[name].[ext]',
+            },
+            {
                 test: /\.(scss|css)$/,
                 use: [
                     'style-loader',

@@ -13,11 +13,9 @@ function mapStateToProps(state) {
     };
 }
 
-function mapDispatchToProps(dispatch) {
-    return {
-        getFilteredData: bindActionCreators(getFilteredData, dispatch),
-        getAllData: bindActionCreators(getAllData, dispatch),
-    };
-}
+const mapDispatchToProps = dispatch => ({
+    getFilteredData: bindActionCreators(getFilteredData, dispatch),
+    getAllData: bindActionCreators(getAllData, dispatch),
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(SampleComponent);
