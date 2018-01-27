@@ -27,7 +27,7 @@ describe('sampleActions tests', () => {
     let server;
 
     beforeEach(() => {
-        server = fakeServer.create();
+        server = fakeServer.create({ autoRespond: true });
     });
 
     afterEach(() => {
@@ -57,7 +57,7 @@ describe('sampleActions tests', () => {
         });
     });
 
-    it('should create correct actions after getAllData is called successfully', () => {
+    it('should create correct actions after getAllData is called successfully', async () => {
         const store = mockStore({ data: [] });
         const expectedActions = [
             { type: GET_DATA_REQUEST },
@@ -65,15 +65,12 @@ describe('sampleActions tests', () => {
         ];
 
         server.respondWith('/__mocks__/sample_data.json', JSON.stringify(serverData));
-        setTimeout(() => server.respond(), 0);
+        await store.dispatch(actions.getAllData());
 
-        return store.dispatch(actions.getAllData())
-            .then(() => {
-                expect(store.getActions()).to.deep.equal(expectedActions);
-            });
+        expect(store.getActions()).to.deep.equal(expectedActions);
     });
 
-    it('should create correct actions after getAllData is called and failed', () => {
+    it('should create correct actions after getAllData is called and failed', async () => {
         const store = mockStore({ data: [] });
         const error = { error: 'Some error' };
         const expectedActions = [
@@ -82,15 +79,12 @@ describe('sampleActions tests', () => {
         ];
 
         server.respondWith('/__mocks__/sample_data.json', [404, {}, JSON.stringify(error)]);
-        setTimeout(() => server.respond(), 0);
+        await store.dispatch(actions.getAllData());
 
-        return store.dispatch(actions.getAllData())
-            .then(() => {
-                expect(store.getActions()).to.deep.equal(expectedActions);
-            });
+        expect(store.getActions()).to.deep.equal(expectedActions);
     });
 
-    it('should create correct actions after getFilteredData is called successfully', () => {
+    it('should create correct actions after getFilteredData is called successfully', async () => {
         const store = mockStore({ data: [] });
         const expectedActions = [
             { type: GET_DATA_REQUEST },
@@ -98,15 +92,12 @@ describe('sampleActions tests', () => {
         ];
 
         server.respondWith('/__mocks__/sample_data.json', JSON.stringify(serverData));
-        setTimeout(() => server.respond(), 0);
+        await store.dispatch(actions.getFilteredData());
 
-        return store.dispatch(actions.getFilteredData())
-            .then(() => {
-                expect(store.getActions()).to.deep.equal(expectedActions);
-            });
+        expect(store.getActions()).to.deep.equal(expectedActions);
     });
 
-    it('should create correct actions after getFilteredData is called and failed', () => {
+    it('should create correct actions after getFilteredData is called and failed', async () => {
         const store = mockStore({ data: [] });
         const error = { error: 'Some error' };
         const expectedActions = [
@@ -115,11 +106,8 @@ describe('sampleActions tests', () => {
         ];
 
         server.respondWith('/__mocks__/sample_data.json', [404, {}, JSON.stringify(error)]);
-        setTimeout(() => server.respond(), 0);
+        await store.dispatch(actions.getFilteredData());
 
-        return store.dispatch(actions.getFilteredData())
-            .then(() => {
-                expect(store.getActions()).to.deep.equal(expectedActions);
-            });
+        expect(store.getActions()).to.deep.equal(expectedActions);
     });
 });
