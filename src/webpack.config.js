@@ -60,6 +60,7 @@ module.exports = {
     },
     devServer: {
         historyApiFallback: true,
+        disableHostCheck: true,
         contentBase: '../dst',
         host: '0.0.0.0',
     },
