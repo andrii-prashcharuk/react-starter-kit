@@ -1,6 +1,6 @@
 // @flow
-import initialState from './_sampleInitialState';
-import type { SampleState } from './_sampleInitialState';
+import initialState from './sampleInitialState';
+import type { SampleState } from './sampleInitialState';
 import type { SampleAction } from './sampleActions';
 
 export default function sample(

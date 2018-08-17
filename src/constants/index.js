@@ -1,6 +1,6 @@
 // @flow
 import type { Store } from 'redux';
-import type { SampleState } from '../reducers/sample/_sampleInitialState';
+import type { SampleState } from '../reducers/sample/sampleInitialState';
 import type { SampleAction } from '../reducers/sample/sampleActions';
 
 export const FETCHING_DATA_MSG = 'Data are loading...';
