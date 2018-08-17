@@ -65,10 +65,10 @@ describe('sampleActions tests', () => {
 
     it('should create correct actions after getAllData is called and failed', async () => {
         const store = mockStore({ data: [] });
-        const error = 'Some error';
+        const error = { error: 'Some error' };
         const expectedActions = [
             { type: 'GET_DATA_REQUEST' },
-            { type: 'GET_DATA_FAILURE', payload: error },
+            { type: 'GET_DATA_FAILURE', payload: error.error },
         ];
 
         server.respondWith('/__mocks__/sample_data.json', [404, {}, JSON.stringify(error)]);
@@ -84,7 +84,7 @@ describe('sampleActions tests', () => {
             { type: 'GET_DATA_SUCCESS', payload: serverData },
         ];
 
-        server.respondWith('/__mocks__/sample_data.json', JSON.stringify(serverData));
+        server.respondWith('/__mocks__/sample_data.json?filter=filter', JSON.stringify(serverData));
         await store.dispatch(actions.getFilteredData('filter'));
 
         expect(store.getActions()).to.deep.equal(expectedActions);
@@ -92,13 +92,13 @@ describe('sampleActions tests', () => {
 
     it('should create correct actions after getFilteredData is called and failed', async () => {
         const store = mockStore({ data: [] });
-        const error = 'Some error';
+        const error = { error: 'Some error' };
         const expectedActions = [
             { type: 'GET_DATA_REQUEST' },
-            { type: 'GET_DATA_FAILURE', payload: error },
+            { type: 'GET_DATA_FAILURE', payload: error.error },
         ];
 
-        server.respondWith('/__mocks__/sample_data.json', [404, {}, JSON.stringify(error)]);
+        server.respondWith('/__mocks__/sample_data.json?filter=filter', [404, {}, JSON.stringify(error)]);
         await store.dispatch(actions.getFilteredData('filter'));
 
         expect(store.getActions()).to.deep.equal(expectedActions);
