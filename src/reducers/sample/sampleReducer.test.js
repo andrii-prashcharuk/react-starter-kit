@@ -1,7 +1,7 @@
 // @flow
 import { expect } from 'chai';
 import sample from './sampleReducer';
-import initialState from './sampleInitialState';
+import initialState from './_sampleInitialState';
 
 describe('sample tests', () => {
     describe('check init values', () => {

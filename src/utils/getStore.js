@@ -1,6 +1,6 @@
 // @flow
 import configureStore from './configureStore';
-import sampleInitialState from '../reducers/sample/sampleInitialState';
+import sampleInitialState from '../reducers/sample/_sampleInitialState';
 
 const getStore = () => configureStore({
     sample: sampleInitialState,
