@@ -22,12 +22,6 @@ To start webpack dev server at [http://0.0.0.0:8080](http://0.0.0.0:8080) run:
 npm run server
 ```
 
-To build a development bundle:
-
-```
-npm run build
-```
-
 To build a development bundle with automatic rebuild on code changes:
 
 ```
@@ -37,10 +31,23 @@ npm run start
 To build a minified production bundle:
 
 ```
-npm run build:production
+npm run build
 ```
 
 The build files are located in ```./dst``` folder.
+
+## Running the project's flow validation check
+
+To run flow validation check:
+
+```
+npm run flow
+
+To run flow validation watch:
+
+```
+npm run flow:watch
+```
 
 ## Running the project's unit tests
 

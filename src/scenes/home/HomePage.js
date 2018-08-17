@@ -1,3 +1,4 @@
+// @flow
 import React from 'react';
 
 const WELCOME_TITLE = 'Welcome to React Starter Kit';

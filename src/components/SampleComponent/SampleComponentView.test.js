@@ -1,8 +1,9 @@
+// @flow
 import React from 'react';
 import { expect } from 'chai';
 import { spy } from 'sinon';
 import { shallow, mount } from 'enzyme';
-import SampleComponent from './SampleComponent';
+import SampleComponent from './SampleComponentView';
 
 const serverData = [
     {

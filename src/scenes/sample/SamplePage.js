@@ -1,5 +1,6 @@
+// @flow
 import React from 'react';
-import SampleComponentData from '../../containers/SampleComponentData';
+import SampleComponentData from '../../components/SampleComponent/SampleComponent';
 
 const SamplePage = () => (
     <section>

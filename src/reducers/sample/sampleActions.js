@@ -1,32 +1,51 @@
+// @flow
 import sampleAPI from '../../utils/api';
 import { getErrorFromRequest } from '../../utils';
-import actionTypes from '../../constants/actionTypes';
+import type { GetState, DataItem } from '../../constants';
 
-const {
-    GET_DATA_REQUEST,
-    GET_DATA_SUCCESS,
-    GET_DATA_FAILURE,
-} = actionTypes;
+type GetDataRequestAction = {
+    type: 'GET_DATA_REQUEST',
+};
 
-export function getDataRequest() {
+export function getDataRequest(): GetDataRequestAction {
     return {
-        type: GET_DATA_REQUEST,
-    };
-}
-export function getDataSuccess(json) {
-    return {
-        type: GET_DATA_SUCCESS,
-        payload: json,
-    };
-}
-export function getDataFailure(json) {
-    return {
-        type: GET_DATA_FAILURE,
-        payload: json,
+        type: 'GET_DATA_REQUEST',
     };
 }
 
-export function getAllData() {
+type GetDataSuccessAction = {
+    type: 'GET_DATA_SUCCESS',
+    payload: DataItem[],
+};
+
+export function getDataSuccess(data: DataItem[]): GetDataSuccessAction {
+    return {
+        type: 'GET_DATA_SUCCESS',
+        payload: data,
+    };
+}
+
+type GetDataFailureAction = {
+    type: 'GET_DATA_FAILURE',
+    payload: string,
+};
+
+export function getDataFailure(error: string): GetDataFailureAction {
+    return {
+        type: 'GET_DATA_FAILURE',
+        payload: error,
+    };
+}
+
+export type SampleAction =
+    GetDataRequestAction |
+    GetDataSuccessAction |
+    GetDataFailureAction;
+
+type Dispatch = (action: SampleAction) => any;
+type ThunkAction = (dispatch: Dispatch, getState: GetState) => any;
+
+export function getAllData(): ThunkAction {
     return (dispatch) => {
         dispatch(getDataRequest());
 
@@ -36,7 +55,7 @@ export function getAllData() {
     };
 }
 
-export function getFilteredData(filter) {
+export function getFilteredData(filter: string): ThunkAction {
     return (dispatch) => {
         dispatch(getDataRequest());
 

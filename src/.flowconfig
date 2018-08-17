@@ -1,0 +1,14 @@
+[ignore]
+<PROJECT_ROOT>/node_modules/*
+
+[include]
+
+[libs]
+flow-typed
+
+[options]
+module.name_mapper='.*\(.scss\)' -> 'CSSModule'
+module.system=haste
+
+[lints]
+deprecated-call-syntax=off

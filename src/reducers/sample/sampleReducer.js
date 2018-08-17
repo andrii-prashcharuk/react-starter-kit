@@ -1,33 +1,31 @@
-import { List } from 'immutable';
-import InitialState from './SampleInitialState';
-import actionTypes from '../../constants/actionTypes';
+// @flow
+import initialState from './sampleInitialState';
+import type { SampleState } from './sampleInitialState';
+import type { SampleAction } from './sampleActions';
 
-const {
-    GET_DATA_REQUEST,
-    GET_DATA_SUCCESS,
-    GET_DATA_FAILURE,
-} = actionTypes;
-const initialState = new InitialState();
-
-export default function sample(state = initialState, action) {
-    let dataList;
-
+export default function sample(
+    state?: SampleState = initialState, action: SampleAction,
+): SampleState {
     switch (action.type) {
-        case GET_DATA_REQUEST:
-            return state.setIn(['isFetching'], true)
-                .setIn(['error'], null);
-
-        case GET_DATA_SUCCESS:
-            dataList = new List(action.payload);
-
-            return state.setIn(['data'], dataList)
-                .setIn(['isFetching'], false)
-                .setIn(['error'], null);
-
-        case GET_DATA_FAILURE:
-            return state.setIn(['isFetching'], false)
-                .setIn(['error'], action.payload);
-
+        case 'GET_DATA_REQUEST':
+            return {
+                ...state,
+                isFetching: true,
+                error: null,
+            };
+        case 'GET_DATA_SUCCESS':
+            return {
+                ...state,
+                data: action.payload,
+                isFetching: false,
+                error: null,
+            };
+        case 'GET_DATA_FAILURE':
+            return {
+                ...state,
+                isFetching: false,
+                error: action.payload,
+            };
         default:
             return state;
     }
