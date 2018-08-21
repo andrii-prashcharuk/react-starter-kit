@@ -42,6 +42,7 @@ To run flow validation check:
 
 ```
 npm run flow
+```
 
 To run flow validation watch:
 
