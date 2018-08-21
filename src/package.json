@@ -1,7 +1,7 @@
 {
   "name": "react-starter-kit",
   "author": "Andrii Prashcharuk",
-  "version": "2.1.1",
+  "version": "2.2.0",
   "description": "React Starter Kit",
   "main": "src/index.js",
   "dependencies": {
@@ -23,11 +23,9 @@
     "babel-polyfill": "^6.26.0",
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-es2017": "^6.24.1",
-    "babel-preset-react": "^6.24.1",
     "babel-preset-flow": "^6.23.0",
+    "babel-preset-react": "^6.24.1",
     "babel-preset-stage-0": "^6.24.1",
-    "flow-bin": "^0.77.0",
-    "flow-watch": "^1.1.1",
     "chai": "^4.1.2",
     "copy-webpack-plugin": "^4.3.1",
     "cross-env": "^5.1.3",
@@ -37,10 +35,14 @@
     "eslint": "^4.16.0",
     "eslint-config-airbnb": "^16.1.0",
     "eslint-loader": "^1.9.0",
+    "eslint-plugin-flowtype": "^2.50.0",
     "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-jest": "^21.21.0",
     "eslint-plugin-jsx-a11y": "^6.0.3",
     "eslint-plugin-react": "^7.5.1",
     "file-loader": "^1.1.6",
+    "flow-bin": "^0.77.0",
+    "flow-watch": "^1.1.1",
     "html-webpack-plugin": "^2.30.1",
     "jsdom": "^11.6.0",
     "mocha": "^5.0.0",
@@ -64,6 +66,12 @@
     "build": "cross-env NODE_ENV=production webpack -p",
     "flow": "flow",
     "flow:watch": "flow-watch"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "roots": [
+      "test/javascript"
+    ]
   },
   "eslintIgnore": [
     "flow-typed/*"

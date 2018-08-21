@@ -36,7 +36,7 @@ module.exports = {
             },
             {
                 test: /\.png/,
-                loader: 'url-loader?limit=100000&name=/images/[name].[ext]',
+                loader: 'url-loader?limit=10000&name=/images/[name].[ext]',
             },
             {
                 test: /\.jpg/,

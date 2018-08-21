@@ -6,7 +6,9 @@ require.extensions['.scss'] = function () { return null; };
 
 const jsdom = require('jsdom');
 const { JSDOM } = jsdom;
-const { document } = (new JSDOM('')).window;
+const { document } = (new JSDOM('', {
+    url: 'http://localhost',
+})).window;
 const exposedProperties = ['window', 'navigator', 'document'];
 const enzyme = require('enzyme');
 const Adapter = require('enzyme-adapter-react-16');

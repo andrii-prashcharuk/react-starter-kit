@@ -4,9 +4,7 @@ import {
     FETCHING_DATA_MSG,
     NO_DATA_MSG,
 } from '../../constants';
-import type {
-    DataItem,
-} from '../../constants';
+import type { DataItem } from '../../constants';
 import './SampleComponent.scss';
 
 type Props = {
