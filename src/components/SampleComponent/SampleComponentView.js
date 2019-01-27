@@ -18,15 +18,17 @@ type Props = {
 
 export default class SampleComponent extends React.Component<Props> {
     componentDidMount() {
-        const { filter } = this.props;
+        const { filter, getFilteredData, getAllData } = this.props;
 
         if (filter) {
-            this.props.getFilteredData(filter);
+            getFilteredData(filter);
         } else {
-            this.props.getAllData();
+            getAllData();
         }
     }
+
     props: Props;
+
     renderError() {
         const { error } = this.props;
 
@@ -35,8 +37,9 @@ export default class SampleComponent extends React.Component<Props> {
         }
         return null;
     }
+
     render() {
-        const { data, isFetching } = this.props;
+        const { data, isFetching, filter } = this.props;
         let dataItems;
         let content;
 
@@ -48,7 +51,11 @@ export default class SampleComponent extends React.Component<Props> {
             dataItems = data.map(({ id, label }) => <li key={id}>{label}</li>);
             content = (
                 <div>
-                    <h3>List{this.props.filter ? ' (filtered)' : ''}:</h3>
+                    <h3>
+                        List
+                        {filter ? ' (filtered)' : ''}
+                        :
+                    </h3>
                     <ul>{dataItems}</ul>
                 </div>
             );

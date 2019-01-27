@@ -1,8 +1,9 @@
 {
-  "presets": ["es2015", "es2017", "react"],
+  "presets": ["@babel/preset-env", "@babel/preset-react", "@babel/preset-flow"],
   "plugins": [
-    "syntax-class-properties",
-    "transform-class-properties",
-    "transform-object-rest-spread"
+    [
+      "@babel/plugin-proposal-object-rest-spread", { "useBuiltIns": true }
+    ],
+    "@babel/plugin-proposal-class-properties"
   ]
 }

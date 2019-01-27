@@ -1,6 +1,7 @@
 // @flow
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import type { Connector } from 'react-redux';
 import { getFilteredData, getAllData } from '../../reducers/sample/sampleActions';
 import type { State } from '../../constants';
 import SampleComponentView from './SampleComponentView';
@@ -23,4 +24,6 @@ const mapDispatchToProps = dispatch => ({
     getAllData: bindActionCreators(getAllData, dispatch),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(SampleComponentView);
+const connector: Connector<OwnProps, *> = connect(mapStateToProps, mapDispatchToProps);
+
+export default connector(SampleComponentView);

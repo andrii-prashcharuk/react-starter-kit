@@ -1,6 +1,6 @@
 process.env.NODE_ENV = 'test';
 
-require('babel-register')();
+require('@babel/register')();
 
 require.extensions['.scss'] = function () { return null; };
 
