@@ -1,7 +1,14 @@
 // @flow
+import type { Effect, Saga } from 'redux-saga';
+import {
+    all,
+    call,
+    put,
+    takeEvery,
+} from 'redux-saga/effects';
 import sampleAPI from '../../utils/api';
 import { getErrorFromRequest } from '../../utils';
-import type { GetState, DataItem } from '../../constants';
+import type { DataItem } from '../../constants';
 
 type GetDataRequestAction = {
     type: 'GET_DATA_REQUEST',
@@ -42,25 +49,65 @@ export type SampleAction =
     GetDataSuccessAction |
     GetDataFailureAction;
 
-type Dispatch = (action: SampleAction) => any;
-type ThunkAction = (dispatch: Dispatch, getState: GetState) => any;
+type GetAllDataAction = {
+    type: 'GET_ALL_DATA_REQUEST',
+};
 
-export function getAllData(): ThunkAction {
-    return (dispatch) => {
-        dispatch(getDataRequest());
-
-        return sampleAPI.getAllData()
-            .then(request => dispatch(getDataSuccess(request.data)))
-            .catch(request => dispatch(getDataFailure(getErrorFromRequest(request))));
+export function getAllData(): GetAllDataAction {
+    return {
+        type: 'GET_ALL_DATA_REQUEST',
     };
 }
 
-export function getFilteredData(filter: string): ThunkAction {
-    return (dispatch) => {
-        dispatch(getDataRequest());
+export function* getAllDataRequest(): Saga<void> {
+    yield put(getDataRequest());
+    try {
+        const { data }: AxiosSagaResult<DataItem[]> = yield call(sampleAPI.getAllData);
+        yield put(getDataSuccess(data));
+    } catch (error) {
+        yield put(getDataFailure(getErrorFromRequest(error)));
+    }
+}
 
-        return sampleAPI.getFilteredData(filter)
-            .then(request => dispatch(getDataSuccess(request.data)))
-            .catch(request => dispatch(getDataFailure(getErrorFromRequest(request))));
+type GetFilteredDataAction = {
+    type: 'GET_FILTERED_DATA_REQUEST',
+    payload: string,
+};
+
+export function getFilteredData(filter: string): GetFilteredDataAction {
+    return {
+        type: 'GET_FILTERED_DATA_REQUEST',
+        payload: filter,
     };
+}
+
+export function* getFilteredDataRequest({ payload: filter }: GetFilteredDataAction): Saga<void> {
+    yield put(getDataRequest());
+    try {
+        const { data }: AxiosSagaResult<DataItem[]> = yield call(sampleAPI.getFilteredData, filter);
+        yield put(getDataSuccess(data));
+    } catch (error) {
+        yield put(getDataFailure(getErrorFromRequest(error)));
+    }
+}
+
+export const sampleSagas: Effect[] = [
+    takeEvery<
+        GetAllDataAction,
+        Saga<void>,
+        'GET_ALL_DATA_REQUEST',
+        typeof getAllDataRequest
+    >('GET_ALL_DATA_REQUEST', getAllDataRequest),
+    takeEvery<
+        GetFilteredDataAction,
+        Saga<void>,
+        'GET_FILTERED_DATA_REQUEST',
+        typeof getFilteredDataRequest
+    >('GET_FILTERED_DATA_REQUEST', getFilteredDataRequest),
+];
+
+export function* sampleRootSaga(): Saga<void> {
+    yield all([
+        ...sampleSagas,
+    ]);
 }

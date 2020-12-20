@@ -1,9 +1,21 @@
 // @flow
 import { createStore, applyMiddleware } from 'redux';
-import thunk from 'redux-thunk';
-import reducer from '../reducers';
-import type { AppStore, State } from '../constants';
+import type { Dispatch } from 'redux';
+import createSagaMiddleware from 'redux-saga';
+import type { SagaMiddleware } from 'redux-saga';
+import reducer, { sagas } from '../reducers';
+import type { AppStore, State, Action } from '../constants';
 
-const createStoreWithMiddleware = applyMiddleware(thunk)(createStore);
+export const sagaMiddleware: SagaMiddleware<{}> = createSagaMiddleware<{}>();
 
-export default (initialState: State): AppStore => createStoreWithMiddleware(reducer, initialState);
+const createStoreWithMiddleware = applyMiddleware<
+    State, Action, Dispatch<Action>
+>(sagaMiddleware)(createStore);
+
+export default (initialState: State): AppStore => {
+    const store: AppStore = createStoreWithMiddleware(reducer, initialState);
+
+    sagaMiddleware.run(sagas);
+
+    return store;
+};

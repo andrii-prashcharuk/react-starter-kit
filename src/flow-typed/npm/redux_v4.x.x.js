@@ -12,7 +12,7 @@ declare module 'redux' {
   */
 
   declare export type DispatchAPI<A> = (action: A) => A;
-  declare export type Dispatch<A: { type: $Subtype<string> }> = DispatchAPI<A>;
+  declare export type Dispatch<A: { type: any }> = DispatchAPI<A>;
 
   declare export type MiddlewareAPI<S, A, D = Dispatch<A>> = {
     dispatch: D;
@@ -32,8 +32,8 @@ declare module 'redux' {
   declare export type CombinedReducer<S, A> = (state: $Shape<S> & {} | void, action: A) => S;
 
   declare export type Middleware<S, A, D = Dispatch<A>> =
-    (api: MiddlewareAPI<S, A, D>) =>
-      (next: D) => D;
+      (api: MiddlewareAPI<S, A, D>) =>
+          (next: D) => D;
 
   declare export type StoreCreator<S, A, D = Dispatch<A>> = {
     (reducer: Reducer<S, A>, enhancer?: StoreEnhancer<S, A, D>): Store<S, A, D>;

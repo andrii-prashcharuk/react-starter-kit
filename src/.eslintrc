@@ -1,5 +1,6 @@
 extends:
-  eslint-config-airbnb
+  - eslint-config-airbnb
+  - plugin:flowtype/recommended
 
 plugins:
   - jest
@@ -29,3 +30,4 @@ rules:
   react/require-default-props: 0
   function-paren-newline: 0
   import/prefer-default-export: 0
+  prefer-promise-reject-errors: 0

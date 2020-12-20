@@ -1,12 +1,12 @@
 // @flow
-import configureMockStore from 'redux-mock-store';
-import thunk from 'redux-thunk';
+import SagaTester from 'redux-saga-tester';
+import axios from 'axios';
+import { beforeEach, describe, it } from 'mocha';
 import { expect } from 'chai';
-import { fakeServer } from 'sinon';
+import sinon from 'sinon';
 import * as actions from './sampleActions';
+import { getPromiseData, getPromiseError } from '../../utils/test-utils';
 
-const middlewares = [thunk];
-const mockStore = configureMockStore(middlewares);
 const serverData = [
     {
         id: '1',
@@ -19,88 +19,113 @@ const serverData = [
 ];
 
 describe('sampleActions tests', () => {
-    let server;
+    describe('testing simple actions', () => {
+        it('should return correct event type for getDataRequest', () => {
+            expect(actions.getDataRequest()).to.deep.equal({
+                type: 'GET_DATA_REQUEST',
+            });
+        });
 
-    beforeEach(() => {
-        server = fakeServer.create({ autoRespond: true });
-    });
+        it('should return correct event type and data for getDataSuccess', () => {
+            expect(actions.getDataSuccess(serverData)).to.deep.equal({
+                type: 'GET_DATA_SUCCESS',
+                payload: serverData,
+            });
+        });
 
-    afterEach(() => {
-        server.restore();
-    });
-
-    it('should return correct event type for getDataRequest', () => {
-        expect(actions.getDataRequest()).to.deep.equal({
-            type: 'GET_DATA_REQUEST',
+        it('should return correct event type and data for getDataFailure', () => {
+            const error = 'Some Error';
+            expect(actions.getDataFailure(error)).to.deep.equal({
+                type: 'GET_DATA_FAILURE',
+                payload: error,
+            });
         });
     });
 
-    it('should return correct event type and data for getDataSuccess', () => {
-        expect(actions.getDataSuccess(serverData)).to.deep.equal({
-            type: 'GET_DATA_SUCCESS',
-            payload: serverData,
+    describe('testing saga actions', () => {
+        let sandbox;
+        let sagaTester;
+
+        beforeEach(() => {
+            sandbox = sinon.createSandbox();
+            sagaTester = new SagaTester();
+            sagaTester.run(actions.sampleRootSaga);
         });
-    });
 
-    it('should return correct event type and data for getDataFailure', () => {
-        const error = 'Some Error';
-        expect(actions.getDataFailure(error)).to.deep.equal({
-            type: 'GET_DATA_FAILURE',
-            payload: error,
+        afterEach(() => {
+            sandbox.restore();
         });
-    });
 
-    it('should create correct actions after getAllData is called successfully', async () => {
-        const store = mockStore({ data: [] });
-        const expectedActions = [
-            { type: 'GET_DATA_REQUEST' },
-            { type: 'GET_DATA_SUCCESS', payload: serverData },
-        ];
+        it('should create correct actions after getAllData is called successfully', async () => {
+            const expectedActions = [
+                { type: 'GET_ALL_DATA_REQUEST' },
+                { type: 'GET_DATA_REQUEST' },
+                { type: 'GET_DATA_SUCCESS', payload: serverData },
+            ];
 
-        server.respondWith('/static/sample_data.json', JSON.stringify(serverData));
-        await store.dispatch(actions.getAllData());
+            sandbox.stub(axios, 'get')
+                .withArgs('/static/sample_data.json')
+                .returns(getPromiseData(serverData));
 
-        expect(store.getActions()).to.deep.equal(expectedActions);
-    });
+            sagaTester.dispatch(actions.getAllData());
+            await sagaTester.waitFor('GET_DATA_SUCCESS');
 
-    it('should create correct actions after getAllData is called and failed', async () => {
-        const store = mockStore({ data: [] });
-        const error = { error: 'Some error' };
-        const expectedActions = [
-            { type: 'GET_DATA_REQUEST' },
-            { type: 'GET_DATA_FAILURE', payload: error.error },
-        ];
+            expect(sagaTester.getCalledActions()).to.deep.equal(expectedActions);
+        });
 
-        server.respondWith('/static/sample_data.json', [404, {}, JSON.stringify(error)]);
-        await store.dispatch(actions.getAllData());
+        it('should create correct actions after getAllData is called and failed', async () => {
+            const error = { error: 'Some error' };
+            const expectedActions = [
+                { type: 'GET_ALL_DATA_REQUEST' },
+                { type: 'GET_DATA_REQUEST' },
+                { type: 'GET_DATA_FAILURE', payload: error.error },
+            ];
 
-        expect(store.getActions()).to.deep.equal(expectedActions);
-    });
+            sandbox.stub(axios, 'get')
+                .withArgs('/static/sample_data.json')
+                .returns(getPromiseError(error));
 
-    it('should create correct actions after getFilteredData is called successfully', async () => {
-        const store = mockStore({ data: [] });
-        const expectedActions = [
-            { type: 'GET_DATA_REQUEST' },
-            { type: 'GET_DATA_SUCCESS', payload: serverData },
-        ];
+            sagaTester.dispatch(actions.getAllData());
+            await sagaTester.waitFor('GET_DATA_FAILURE');
 
-        server.respondWith('/static/sample_data.json?filter=filter', JSON.stringify(serverData));
-        await store.dispatch(actions.getFilteredData('filter'));
+            expect(sagaTester.getCalledActions()).to.deep.equal(expectedActions);
+        });
 
-        expect(store.getActions()).to.deep.equal(expectedActions);
-    });
+        it('should create correct actions after getFilteredData is called successfully', async () => {
+            const filter = 'someFilterValue';
+            const expectedActions = [
+                { type: 'GET_FILTERED_DATA_REQUEST', payload: filter },
+                { type: 'GET_DATA_REQUEST' },
+                { type: 'GET_DATA_SUCCESS', payload: serverData },
+            ];
 
-    it('should create correct actions after getFilteredData is called and failed', async () => {
-        const store = mockStore({ data: [] });
-        const error = { error: 'Some error' };
-        const expectedActions = [
-            { type: 'GET_DATA_REQUEST' },
-            { type: 'GET_DATA_FAILURE', payload: error.error },
-        ];
+            sandbox.stub(axios, 'get')
+                .withArgs('/static/sample_data.json', { params: { filter } })
+                .returns(getPromiseData(serverData));
 
-        server.respondWith('/static/sample_data.json?filter=filter', [404, {}, JSON.stringify(error)]);
-        await store.dispatch(actions.getFilteredData('filter'));
+            sagaTester.dispatch(actions.getFilteredData(filter));
+            await sagaTester.waitFor('GET_DATA_SUCCESS');
 
-        expect(store.getActions()).to.deep.equal(expectedActions);
+            expect(sagaTester.getCalledActions()).to.deep.equal(expectedActions);
+        });
+
+        it('should create correct actions after getFilteredData is called and failed', async () => {
+            const filter = 'someFilterValue';
+            const error = { error: 'Some error' };
+            const expectedActions = [
+                { type: 'GET_FILTERED_DATA_REQUEST', payload: filter },
+                { type: 'GET_DATA_REQUEST' },
+                { type: 'GET_DATA_FAILURE', payload: error.error },
+            ];
+
+            sandbox.stub(axios, 'get')
+                .withArgs('/static/sample_data.json', { params: { filter } })
+                .returns(getPromiseError(error));
+
+            sagaTester.dispatch(actions.getFilteredData(filter));
+            await sagaTester.waitFor('GET_DATA_FAILURE');
+
+            expect(sagaTester.getCalledActions()).to.deep.equal(expectedActions);
+        });
     });
 });

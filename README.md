@@ -36,6 +36,12 @@ npm run build
 
 The build files are located in ```./dst``` folder.
 
+IMPORTANT! In case if you are getting "ENOENT" error during the build, try to rebuild node-sass:
+
+```
+node ./node_modules/node-sass/scripts/install.js && npm rebuild node-sass
+```
+
 ## Running the project's flow validation check
 
 To run flow validation check:

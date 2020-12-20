@@ -7,7 +7,7 @@ export type SampleState = {
     error: string | null,
 };
 
-const initialState = {
+const initialState: SampleState = {
     data: [],
     isFetching: false,
     error: null,

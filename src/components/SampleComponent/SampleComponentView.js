@@ -1,5 +1,6 @@
 // @flow
 import React from 'react';
+import type { Node } from 'react';
 import {
     FETCHING_DATA_MSG,
     NO_DATA_MSG,
@@ -7,7 +8,7 @@ import {
 import type { DataItem } from '../../constants';
 import './SampleComponent.scss';
 
-type Props = {
+export type Props = {
     getFilteredData: string => *,
     getAllData: () => *,
     data: DataItem[],
@@ -27,9 +28,7 @@ export default class SampleComponent extends React.Component<Props> {
         }
     }
 
-    props: Props;
-
-    renderError() {
+    renderError(): Node {
         const { error } = this.props;
 
         if (error) {
@@ -38,7 +37,7 @@ export default class SampleComponent extends React.Component<Props> {
         return null;
     }
 
-    render() {
+    render(): Node {
         const { data, isFetching, filter } = this.props;
         let dataItems;
         let content;

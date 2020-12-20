@@ -16,6 +16,10 @@ module.exports = (env, argv) => {
             path: BUILD_DIR,
             filename: scriptName,
         },
+        performance: {
+            hints: isProduction ? 'warning' : false,
+        },
+        target: isProduction ? 'browserslist' : 'web',
         devtool: isProduction ? 'source-map' : 'inline-source-map',
         module: {
             rules: [
@@ -38,20 +42,19 @@ module.exports = (env, argv) => {
                     include: APP_DIR,
                 },
                 {
-                    test: /\.png/,
-                    loader: 'url-loader?limit=10000&name=/images/[name].[ext]',
-                },
-                {
-                    test: /\.jpg/,
-                    loader: 'file-loader?&name=/images/[name].[ext]',
+                    test: /\.(jpg|png)$/,
+                    use: [{
+                        loader: 'file-loader',
+                        options: {
+                            limit: 10000,
+                            name: 'images/[name].[ext]',
+                            esModule: false,
+                        },
+                    }],
                 },
                 {
                     test: /\.(scss|css)$/,
-                    use: [
-                        'style-loader',
-                        'css-loader',
-                        'sass-loader',
-                    ],
+                    use: ['style-loader', 'css-loader', 'sass-loader'],
                 },
             ],
         },
@@ -64,7 +67,8 @@ module.exports = (env, argv) => {
         devServer: {
             historyApiFallback: true,
             disableHostCheck: true,
-            contentBase: '../dst',
+            hot: true,
+            contentBase: '../dst/',
             host: '0.0.0.0',
         },
         plugins: [
@@ -74,13 +78,14 @@ module.exports = (env, argv) => {
                 scriptPath: `/${scriptName}?v${PACKAGE.version}`,
                 inject: false,
             }),
-            new CopyWebpackPlugin([
-                {
-                    from: './static',
-                    to: '../dst/static',
-                    toType: 'dir',
-                },
-            ]),
+            new CopyWebpackPlugin({
+                patterns: [
+                    {
+                        from: './static',
+                        to: '../dst/static',
+                    },
+                ],
+            }),
         ],
     };
 };
