@@ -6,7 +6,7 @@ import {
     NO_DATA_MSG,
 } from '../../constants';
 import type { DataItem } from '../../constants';
-import './SampleComponent.scss';
+import bgImage from './images/bg-image.png';
 
 export type Props = {
     getFilteredData: string => *,
@@ -61,7 +61,13 @@ export default class SampleComponent extends React.Component<Props> {
         }
 
         return (
-            <div className="SampleComponent">
+            <div
+                className="SampleComponent"
+                css={{
+                    background: `url(${bgImage}) no-repeat center`,
+                    backgroundSize: 'cover',
+                }}
+            >
                 {this.renderError()}
                 {content}
             </div>

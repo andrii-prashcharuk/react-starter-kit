@@ -1,6 +1,6 @@
 # React Starter Kit
 
-This is a start project for your React App
+This is a starter project for your React App
 
 ## Getting Started
 
@@ -8,7 +8,7 @@ To build the project **node.js** and **npm** is required (I used node v8.9.2 and
 
 ### Installing
 
-After node and npm are ready, navigate to ```./src``` folder and run:
+After node and npm are ready, from the project's root folder run:
 
 ```
 npm install
@@ -16,7 +16,7 @@ npm install
 
 ## Running the project
 
-To start webpack dev server at [http://0.0.0.0:8080](http://0.0.0.0:8080) run:
+To start webpack dev server at [http://localhost:8080](http://localhost:8080) run:
 
 ```
 npm run server
@@ -35,12 +35,6 @@ npm run build
 ```
 
 The build files are located in ```./dst``` folder.
-
-IMPORTANT! In case if you are getting "ENOENT" error during the build, try to rebuild node-sass:
-
-```
-node ./node_modules/node-sass/scripts/install.js && npm rebuild node-sass
-```
 
 ## Running the project's flow validation check
 
