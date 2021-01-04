@@ -1,9 +1,6 @@
 // @flow
 import SagaTester from 'redux-saga-tester';
 import axios from 'axios';
-import { beforeEach, describe, it } from 'mocha';
-import { expect } from 'chai';
-import sinon from 'sinon';
 import * as actions from './sampleActions';
 import { getPromiseData, getPromiseError } from '../../utils/test-utils';
 
@@ -18,16 +15,18 @@ const serverData = [
     },
 ];
 
+jest.mock('axios');
+
 describe('sampleActions tests', () => {
     describe('testing simple actions', () => {
         it('should return correct event type for getDataRequest', () => {
-            expect(actions.getDataRequest()).to.deep.equal({
+            expect(actions.getDataRequest()).toEqual({
                 type: 'GET_DATA_REQUEST',
             });
         });
 
         it('should return correct event type and data for getDataSuccess', () => {
-            expect(actions.getDataSuccess(serverData)).to.deep.equal({
+            expect(actions.getDataSuccess(serverData)).toEqual({
                 type: 'GET_DATA_SUCCESS',
                 payload: serverData,
             });
@@ -35,7 +34,7 @@ describe('sampleActions tests', () => {
 
         it('should return correct event type and data for getDataFailure', () => {
             const error = 'Some Error';
-            expect(actions.getDataFailure(error)).to.deep.equal({
+            expect(actions.getDataFailure(error)).toEqual({
                 type: 'GET_DATA_FAILURE',
                 payload: error,
             });
@@ -43,17 +42,11 @@ describe('sampleActions tests', () => {
     });
 
     describe('testing saga actions', () => {
-        let sandbox;
         let sagaTester;
 
         beforeEach(() => {
-            sandbox = sinon.createSandbox();
             sagaTester = new SagaTester();
-            sagaTester.run(actions.sampleRootSaga);
-        });
-
-        afterEach(() => {
-            sandbox.restore();
+            sagaTester.start(actions.sampleRootSaga);
         });
 
         it('should create correct actions after getAllData is called successfully', async () => {
@@ -63,14 +56,17 @@ describe('sampleActions tests', () => {
                 { type: 'GET_DATA_SUCCESS', payload: serverData },
             ];
 
-            sandbox.stub(axios, 'get')
-                .withArgs('/static/sample_data.json')
-                .returns(getPromiseData(serverData));
+            axios.get.mockImplementationOnce((url: string) => {
+                if (url === '/static/sample_data.json') {
+                    return getPromiseData(serverData);
+                }
+                return getPromiseError('Error');
+            });
 
             sagaTester.dispatch(actions.getAllData());
             await sagaTester.waitFor('GET_DATA_SUCCESS');
 
-            expect(sagaTester.getCalledActions()).to.deep.equal(expectedActions);
+            expect(sagaTester.getCalledActions()).toEqual(expectedActions);
         });
 
         it('should create correct actions after getAllData is called and failed', async () => {
@@ -81,14 +77,17 @@ describe('sampleActions tests', () => {
                 { type: 'GET_DATA_FAILURE', payload: error.error },
             ];
 
-            sandbox.stub(axios, 'get')
-                .withArgs('/static/sample_data.json')
-                .returns(getPromiseError(error));
+            axios.get.mockImplementationOnce((url: string) => {
+                if (url === '/static/sample_data.json') {
+                    return getPromiseError(error);
+                }
+                return getPromiseError('Error');
+            });
 
             sagaTester.dispatch(actions.getAllData());
             await sagaTester.waitFor('GET_DATA_FAILURE');
 
-            expect(sagaTester.getCalledActions()).to.deep.equal(expectedActions);
+            expect(sagaTester.getCalledActions()).toEqual(expectedActions);
         });
 
         it('should create correct actions after getFilteredData is called successfully', async () => {
@@ -99,14 +98,17 @@ describe('sampleActions tests', () => {
                 { type: 'GET_DATA_SUCCESS', payload: serverData },
             ];
 
-            sandbox.stub(axios, 'get')
-                .withArgs('/static/sample_data.json', { params: { filter } })
-                .returns(getPromiseData(serverData));
+            axios.get.mockImplementationOnce((url: string, args: any) => {
+                if (url === '/static/sample_data.json' && args?.params?.filter === filter) {
+                    return getPromiseData(serverData);
+                }
+                return getPromiseError('Error');
+            });
 
             sagaTester.dispatch(actions.getFilteredData(filter));
             await sagaTester.waitFor('GET_DATA_SUCCESS');
 
-            expect(sagaTester.getCalledActions()).to.deep.equal(expectedActions);
+            expect(sagaTester.getCalledActions()).toEqual(expectedActions);
         });
 
         it('should create correct actions after getFilteredData is called and failed', async () => {
@@ -118,14 +120,17 @@ describe('sampleActions tests', () => {
                 { type: 'GET_DATA_FAILURE', payload: error.error },
             ];
 
-            sandbox.stub(axios, 'get')
-                .withArgs('/static/sample_data.json', { params: { filter } })
-                .returns(getPromiseError(error));
+            axios.get.mockImplementationOnce((url: string, args: any) => {
+                if (url === '/static/sample_data.json' && args?.params?.filter === filter) {
+                    return getPromiseError(error);
+                }
+                return getPromiseError('Error');
+            });
 
             sagaTester.dispatch(actions.getFilteredData(filter));
             await sagaTester.waitFor('GET_DATA_FAILURE');
 
-            expect(sagaTester.getCalledActions()).to.deep.equal(expectedActions);
+            expect(sagaTester.getCalledActions()).toEqual(expectedActions);
         });
     });
 });

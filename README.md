@@ -1,10 +1,10 @@
 # React Starter Kit
 
-This is a starter project for your React App
+This is a React App boilerplate in JS. Uses Redux-Saga, flow typing, emotion, and jest unit tests.
 
 ## Getting Started
 
-To build the project **node.js** and **npm** is required (I used node v8.9.2 and npm v5.6.0).
+To build the project **node.js** and **npm** is required (I used node v14.15.3 and npm v6.14.9).
 
 ### Installing
 

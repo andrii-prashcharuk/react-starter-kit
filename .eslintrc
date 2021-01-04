@@ -15,7 +15,7 @@ settings:
 
 env:
   browser: true
-  mocha: true
+  jest: true
   node: true
 
 rules:

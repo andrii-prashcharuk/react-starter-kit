@@ -1,8 +1,6 @@
 // @flow
 import React from 'react';
-import { expect } from 'chai';
-import { spy } from 'sinon';
-import { shallow } from 'enzyme';
+import { render, cleanup, screen } from '@testing-library/react';
 import type { DataItem } from '../../constants';
 import SampleComponent from './SampleComponentView';
 
@@ -33,7 +31,7 @@ const renderComponent = ({
     isFetching = false,
     error = null,
     filter,
-}: RenderComponentProps) => (
+}: RenderComponentProps) => render(
     <SampleComponent
         getFilteredData={getFilteredData}
         getAllData={getAllData}
@@ -41,46 +39,43 @@ const renderComponent = ({
         isFetching={isFetching}
         error={error}
         filter={filter}
-    />
+    />,
 );
 
-describe('SampleComponent tests', () => {
-    it('should be rendered correctly with empty data', () => {
-        const getAllData = spy();
-        const wrapper = shallow(
-            renderComponent({ getAllData }),
-        );
-        expect(wrapper.find('.SampleComponent > div').text()).equal('No data were found');
-        expect(getAllData).to.have.been.calledWithExactly();
+describe('<SampleComponent />', () => {
+    afterEach(cleanup);
+
+    test('should be rendered correctly with empty data', () => {
+        const getAllData = jest.fn();
+        renderComponent({ getAllData });
+
+        expect(screen.getByText('No data were found')).toBeInTheDocument();
+        expect(getAllData).toHaveBeenCalledWith();
     });
 
-    it('should be rendered correctly while fetching', () => {
-        const wrapper = shallow(
-            renderComponent({ isFetching: true }),
-        );
-        expect(wrapper.find('.SampleComponent > div').text()).equal('Data are loading...');
+    test('should be rendered correctly while fetching', () => {
+        renderComponent({ isFetching: true });
+
+        expect(screen.getByText('Data are loading...')).toBeInTheDocument();
     });
 
-    it('should be rendered correctly with some dataset from server', () => {
-        const wrapper = shallow(
-            renderComponent({ data: serverData }),
-        );
-        expect(wrapper.find('h3').text()).equal('List:');
-        expect(wrapper.find('li')).to.have.length(2);
+    test('should be rendered correctly with some dataset from server', () => {
+        const { container } = renderComponent({ data: serverData });
+
+        expect(screen.getByText('List:')).toBeInTheDocument();
+        expect(container.querySelectorAll('li').length).toEqual(2);
     });
 
-    it('should be rendered correctly with some filtered dataset from server', () => {
-        const wrapper = shallow(
-            renderComponent({ data: serverData, filter: 'foo=bar' }),
-        );
-        expect(wrapper.find('h3').text()).equal('List (filtered):');
-        expect(wrapper.find('li')).to.have.length(2);
+    test('should be rendered correctly with some filtered dataset from server', () => {
+        const { container } = renderComponent({ data: serverData, filter: 'foo=bar' });
+
+        expect(screen.getByText('List (filtered):')).toBeInTheDocument();
+        expect(container.querySelectorAll('li').length).toEqual(2);
     });
 
-    it('should be rendered correctly with if error occurs', () => {
-        const wrapper = shallow(
-            renderComponent({ error: 'Some Error' }),
-        );
-        expect(wrapper.find('span').text()).equal('Some Error');
+    test('should be rendered correctly with if error occurs', () => {
+        renderComponent({ error: 'Some Error' });
+
+        expect(screen.getByText('Some Error')).toBeInTheDocument();
     });
 });

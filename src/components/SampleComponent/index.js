@@ -1,6 +1,3 @@
 // @flow
-import SampleComponentView from './SampleComponentView';
-import SampleComponent from './SampleComponent';
-
-export { SampleComponentView };
-export default SampleComponent;
+export { default as SampleComponentView } from './SampleComponentView';
+export { default } from './SampleComponent';

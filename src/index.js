@@ -1,8 +1,9 @@
 // @flow
 import React from 'react';
 import { render } from 'react-dom';
-import 'babel-polyfill';
-import App from './scenes/App';
+import 'core-js/stable';
+import 'regenerator-runtime/runtime';
+import App from './scenes/AppView';
 
 const root = document.getElementById('root');
 

@@ -1,4 +1,2 @@
 // @flow
-import SamplePage from './SamplePage';
-
-export default SamplePage;
+export { default } from './SamplePageView';
