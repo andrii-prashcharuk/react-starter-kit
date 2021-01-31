@@ -1,7 +1,7 @@
 // @flow
 import axios from 'axios';
 import type { AxiosPromise } from 'axios';
-import type { DataItem } from '../constants';
+import type { DataItem } from '../types';
 
 const URL = '/static/sample_data.json';
 

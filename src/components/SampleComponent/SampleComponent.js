@@ -1,39 +1,72 @@
 // @flow
-import type { ComponentType } from 'react';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
+import React, { useEffect } from 'react';
+import type { Node } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+    getSampleData,
+    isSampleFetching,
+    getSampleError,
+} from '../../reducers/sample/sampleSelectors';
 import { getFilteredData, getAllData } from '../../reducers/sample/sampleActions';
-import type { DataItem, State } from '../../constants';
-import SampleComponentView from './SampleComponentView';
-import type { Props } from './SampleComponentView';
+import {
+    FETCHING_DATA_MSG,
+    NO_DATA_MSG,
+} from '../../constants';
+import bgImage from './images/bg-image.png';
 
-type OwnProps = {|
+export type Props = {
     filter?: string,
-|};
-
-type MapStateToProps = (State, OwnProps) => {|
-    data: DataItem[],
-    isFetching: boolean,
-    error: string | null,
-|};
-
-const mapStateToProps: MapStateToProps = (state: State) => {
-    const { data, isFetching, error } = state.sample;
-
-    return {
-        data,
-        isFetching,
-        error,
-    };
 };
 
-const mapDispatchToProps = (dispatch) => ({
-    getFilteredData: bindActionCreators(getFilteredData, dispatch),
-    getAllData: bindActionCreators(getAllData, dispatch),
-});
+const SampleComponent = ({ filter }: Props): Node => {
+    const data = useSelector(getSampleData);
+    const isFetching = useSelector(isSampleFetching);
+    const error = useSelector(getSampleError);
+    const dispatch = useDispatch();
+    let dataItems;
+    let content;
 
-const WrappedComponent: ComponentType<OwnProps> = connect<
-    Props, OwnProps, _, _, _, _,
->(mapStateToProps, mapDispatchToProps)(SampleComponentView);
+    useEffect(() => {
+        if (data) {
+            return;
+        }
+        if (filter) {
+            dispatch(getFilteredData(filter));
+        } else {
+            dispatch(getAllData());
+        }
+    }, [dispatch, filter, data]);
 
-export default WrappedComponent;
+    if (isFetching) {
+        content = <div>{FETCHING_DATA_MSG}</div>;
+    } else if (!data || !data.length) {
+        content = <div>{NO_DATA_MSG}</div>;
+    } else {
+        dataItems = data.map(({ id, label }) => <li key={id}>{label}</li>);
+        content = (
+            <div>
+                <h3>
+                    List
+                    {filter ? ' (filtered)' : ''}
+                    :
+                </h3>
+                <ul>{dataItems}</ul>
+            </div>
+        );
+    }
+
+    return (
+        <div
+            className="SampleComponent"
+            css={{
+                background: `url(${bgImage}) no-repeat center`,
+                backgroundSize: 'cover',
+            }}
+        >
+            {!!error && <span>{error}</span>}
+            {content}
+        </div>
+    );
+};
+
+export default SampleComponent;

@@ -5,7 +5,7 @@ import emotionNormalize from 'emotion-normalize';
 import type { Node } from 'react';
 import { Provider } from 'react-redux';
 import { BrowserRouter, Route } from 'react-router-dom';
-import NavView from '../components/Nav';
+import Nav from '../components/Nav';
 import HomePage from './home';
 import SamplePage from './sample';
 import getStore from '../utils/getStore';
@@ -34,7 +34,7 @@ const AppLayout = (): Node => (
                       `}
                 />
                 <header>
-                    <NavView />
+                    <Nav />
                 </header>
                 <main>
                     <Route path="/" exact component={HomePage} />

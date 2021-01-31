@@ -2,7 +2,7 @@
 import SagaTester from 'redux-saga-tester';
 import axios from 'axios';
 import * as actions from './sampleActions';
-import { getPromiseData, getPromiseError } from '../../utils/test-utils';
+import { getPromiseData, getPromiseError } from '../../utils/testUtils';
 
 const serverData = [
     {

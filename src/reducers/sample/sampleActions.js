@@ -8,7 +8,7 @@ import {
 } from 'redux-saga/effects';
 import sampleAPI from '../../utils/api';
 import { getErrorFromRequest } from '../../utils';
-import type { DataItem } from '../../constants';
+import type { DataItem } from '../../types';
 
 type GetDataRequestAction = {
     type: 'GET_DATA_REQUEST',

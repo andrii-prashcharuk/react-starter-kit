@@ -5,7 +5,7 @@ import initialState from './sampleInitialState';
 describe('sample tests', () => {
     describe('check init values', () => {
         it('sets data to an empty List', () => {
-            expect(initialState.data).toEqual([]);
+            expect(initialState.data).toEqual(null);
         });
 
         it('sets isFetching to false', () => {

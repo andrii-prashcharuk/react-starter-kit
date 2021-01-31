@@ -1,2 +1,2 @@
 // @flow
-export { default } from './SamplePageView';
+export { default } from './SamplePage';

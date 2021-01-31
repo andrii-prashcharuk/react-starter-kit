@@ -31,3 +31,4 @@ rules:
   function-paren-newline: 0
   import/prefer-default-export: 0
   prefer-promise-reject-errors: 0
+  import/no-extraneous-dependencies: ["error", {"devDependencies": true}]

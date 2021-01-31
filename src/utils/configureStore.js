@@ -4,7 +4,7 @@ import type { Dispatch } from 'redux';
 import createSagaMiddleware from 'redux-saga';
 import type { SagaMiddleware } from 'redux-saga';
 import reducer, { sagas } from '../reducers';
-import type { AppStore, State, Action } from '../constants';
+import type { AppStore, State, Action } from '../types';
 
 export const sagaMiddleware: SagaMiddleware<{}> = createSagaMiddleware<{}>();
 

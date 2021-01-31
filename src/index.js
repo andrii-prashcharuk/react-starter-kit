@@ -3,7 +3,7 @@ import React from 'react';
 import { render } from 'react-dom';
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
-import App from './scenes/AppView';
+import App from './scenes/App';
 
 const root = document.getElementById('root');
 
