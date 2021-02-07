@@ -1,7 +1,7 @@
 {
   "name": "react-starter-kit",
   "author": "Andrii Prashcharuk",
-  "version": "2.6.1",
+  "version": "2.6.2",
   "description": "React Starter Kit",
   "main": "src/index.js",
   "dependencies": {
